@@ -14,4 +14,4 @@ SPIDER_MODULES = ['wikiSpider.spiders']
 NEWSPIDER_MODULE = 'wikiSpider.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'wikiSpider (+http://www.yourdomain.com)'
+# USER_AGENT = 'wikiSpider (+http://www.yourdomain.com)'

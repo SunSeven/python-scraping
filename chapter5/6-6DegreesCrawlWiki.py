@@ -12,7 +12,7 @@ def pageScraped(url):
     if cur.rowcount == 0:
         return False
     page = cur.fetchone()
-    
+
     cur.execute("SELECT * FROM links WHERE fromPageId = %s", (int(page[0])))
     if cur.rowcount == 0:
         return False
@@ -38,17 +38,18 @@ def getLinks(pageUrl, recursionLevel):
     if recursionLevel > 4:
         return
     pageId = insertPageIfNotExists(pageUrl)
-    html = urlopen("http://en.wikipedia.org"+pageUrl)
+    html = urlopen("http://en.wikipedia.org" + pageUrl)
     bsObj = BeautifulSoup(html, "html.parser")
     for link in bsObj.findAll("a", href=re.compile("^(/wiki/)((?!:).)*$")):
         insertLink(pageId, insertPageIfNotExists(link.attrs['href']))
         if not pageScraped(link.attrs['href']):
-            #We have encountered a new page, add it and search it for links
+            # We have encountered a new page, add it and search it for links
             newPage = link.attrs['href']
             print(newPage)
-            getLinks(newPage, recursionLevel+1)
-        else: 
-            print("Skipping: "+str(link.attrs['href'])+" found on "+pageUrl)
-getLinks("/wiki/Kevin_Bacon", 0) 
+            getLinks(newPage, recursionLevel + 1)
+        else:
+            print("Skipping: " + str(link.attrs['href']) + " found on " + pageUrl)
+
+getLinks("/wiki/Kevin_Bacon", 0)
 cur.close()
 conn.close()
