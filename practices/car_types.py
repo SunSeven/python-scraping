@@ -1,8 +1,16 @@
+import logging
+
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
 from models import CarInfo
 from db import init_db, db
+
+logging.basicConfig(level=logging.ERROR,
+                    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                    datefmt='%a, %d %b %Y %H:%M:%S',
+                    filename='/home/noth/log/scraping_error.log',
+                    filemode='w')
 
 def car_type(url, tagclass='interval01-list-cars'):
     page = urlopen(url)
@@ -35,7 +43,15 @@ def car_type(url, tagclass='interval01-list-cars'):
     init_db()
     with db.atomic():
         for model, price in zip(models, prices):
-            CarInfo.create(brand=title, model=model, price=price)
+            try:
+                CarInfo.get(CarInfo.brand == title, CarInfo.model == model)
+            except Exception as e:
+                logging.error(e)
+                CarInfo.create(brand=title, model=model, price=price)
+            else:
+                CarInfo.update(price=price).where(CarInfo.brand == title,
+                                                  CarInfo.model == model).execute()
+
 
 # if __name__ == '__main__':
 #
