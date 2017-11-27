@@ -10,7 +10,7 @@ from utils import parse_home_dir
 logging.basicConfig(level=logging.ERROR,
                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S',
-                    filename=parse_home_dir('scraping_error.log'),
+                    filename=parse_home_dir('log', 'scraping_error.log'),
                     filemode='w')
 
 def car_type(url, tagclass='interval01-list-cars'):
@@ -37,11 +37,6 @@ def car_type(url, tagclass='interval01-list-cars'):
         except Exception:
             pass
 
-    # return title, types, prices
-    # print(title + ':')
-    # for car_type, price in zip(types, prices):
-    #     print('-->', car_type, price)
-    init_db()
     with db.atomic():
         for model, price in zip(models, prices):
             try:
@@ -52,11 +47,3 @@ def car_type(url, tagclass='interval01-list-cars'):
             else:
                 CarInfo.update(price=price).where(CarInfo.brand == title,
                                                   CarInfo.model == model).execute()
-
-
-# if __name__ == '__main__':
-#
-#     car, car_types, guard_prices = car_type('https://www.autohome.com.cn/3872/#pvareaid=101487')
-#     print(car + ':')
-#     for car_type, price in zip(car_types, guard_prices):
-#         print('-->', car_type, price)

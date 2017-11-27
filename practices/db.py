@@ -1,6 +1,8 @@
 from peewee import SqliteDatabase
 
-db = SqliteDatabase('C:\\Users\\Admin\\Desktop\\Data\\carinfo.db')
+from utils import parse_home_dir
+
+db = SqliteDatabase(parse_home_dir('data', 'carinfo.db'))
 
 def init_db():
-    db.init('C:\\Users\\Admin\\Desktop\\Data\\carinfo.db')
+    db.init(parse_home_dir('data', 'carinfo.db'))
