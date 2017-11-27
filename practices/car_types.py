@@ -5,11 +5,12 @@ from bs4 import BeautifulSoup
 
 from models import CarInfo
 from db import init_db, db
+from utils import parse_home_dir
 
 logging.basicConfig(level=logging.ERROR,
                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S',
-                    filename='/home/noth/log/scraping_error.log',
+                    filename=parse_home_dir('scraping_error.log'),
                     filemode='w')
 
 def car_type(url, tagclass='interval01-list-cars'):
