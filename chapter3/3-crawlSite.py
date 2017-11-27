@@ -32,6 +32,19 @@ def splitAddress(address):
     addressParts = address.replace("http://", "").split("/")
     return addressParts
 
+def getNextExternalLink(internalLink):
+    html = urlopen("http://oreilly.com" + internalLink)
+    bsObj = BeautifulSoup(html.read(), 'lxml')
+    externalLinks = getExternalLinks(bsObj, splitAddress(internalLink)[0])
+
+    if len(externalLinks) == 0:
+        internalLinks = getInternalLinks(internalLink)
+        return getNextExternalLink(internalLinks[random.randint(0, len(internalLinks) - 1)])
+    else:
+        externalLink = externalLinks[0]
+        print('externalLink is:', externalLink)
+        return externalLink
+
 def getRandomExternalLink(startingPage):
     html = urlopen(startingPage)
     bsObj = BeautifulSoup(html, "html.parser")
