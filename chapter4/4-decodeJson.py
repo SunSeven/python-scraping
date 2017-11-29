@@ -6,4 +6,5 @@ def getCountry(ipAddress):
     responseJson = json.loads(response)
     return responseJson.get("country_code")
 
-print(getCountry("50.78.253.58"))
+if __name__ == '__main__':
+    print(getCountry("50.78.253.58"))
