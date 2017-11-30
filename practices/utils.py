@@ -1,7 +1,7 @@
 import os
 from platform import platform
 
-def parse_home_dir(dirname, filename):
+def parse_home_dir(dirname: str, filename: str)-> str:
     platform_os = platform()
     if platform_os.startswith('Linux'):
         return '{}/{}/{}'.format(os.path.expanduser("~"), dirname, filename)
