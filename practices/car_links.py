@@ -1,4 +1,5 @@
 import re
+import peewee
 
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
@@ -29,6 +30,6 @@ def fetch_url_links(url):
 if __name__ == '__main__':
     try:
         db.create_table(CarInfo)
-    except Exception as e:
+    except peewee.OperationalError as e:
         print(e)
     fetch_url_links('')
