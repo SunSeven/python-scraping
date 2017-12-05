@@ -19,7 +19,7 @@ def isCommon(ngram):
     return False
 
 def cleanText(input):
-    input = re.sub('\n+', " ", input).lower()
+    input = re.sub('\n+', " ", input)
     input = re.sub('\[[0-9]*\]', "", input)
     input = re.sub(' +', " ", input)
     input = re.sub("u\.s\.", "us", input)
@@ -41,10 +41,11 @@ def getNgrams(input, n):
     input = cleanInput(input)
     output = {}
     for i in range(len(input) - n + 1):
-        ngramTemp = " ".join(input[i:i + n])
-        if ngramTemp not in output:
-            output[ngramTemp] = 0
-        output[ngramTemp] += 1
+        if not isCommon(input[i: i+n]):
+            ngramTemp = " ".join(input[i:i + n])
+            if ngramTemp not in output:
+                output[ngramTemp] = 0
+            output[ngramTemp] += 1
     return output
 
 def getFirstSentenceContaining(ngram, content):
@@ -52,10 +53,15 @@ def getFirstSentenceContaining(ngram, content):
     sentences = content.split(".")
     for sentence in sentences:
         if ngram in sentence:
-            return sentence
+            return sentence.strip()
     return ""
 
-content = str(urlopen("http://pythonscraping.com/files/space.txt").read(), 'utf-8')
+content = str(urlopen("http://pythonscraping.com/files/inaugurationSpeech.txt").read(), 'utf-8')
+print('Done')
 ngrams = getNgrams(content, 2)
 sortedNGrams = sorted(ngrams.items(), key=operator.itemgetter(1), reverse=True)
 print(sortedNGrams)
+
+for i in range(5):
+    sentence = getFirstSentenceContaining(sortedNGrams[i][0], content)
+    print('.', sentence)
