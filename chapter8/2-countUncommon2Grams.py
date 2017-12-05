@@ -64,4 +64,4 @@ print(sortedNGrams)
 
 for i in range(5):
     sentence = getFirstSentenceContaining(sortedNGrams[i][0], content)
-    print('.', sentence)
+    print('•', sentence)
